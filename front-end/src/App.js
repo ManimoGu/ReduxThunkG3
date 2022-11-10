@@ -1,12 +1,17 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
-import {getTasks} from "./Data/reducer"
+import {getTasks, AddTask} from "./Data/reducer"
 import {useDispatch, useSelector} from "react-redux"
+import Task from './modals/task';
 
 function App() {
 
   const dispatch = useDispatch()
+
+  const [newtask, setNewtask] = useState(new Task())
+
+  
 
   useEffect(() =>{
       dispatch(getTasks())
@@ -14,11 +19,12 @@ function App() {
 
   const Tasks = useSelector(state => state.Tasks.list)
 
-
+ 
 
   return (
     <div className="App">
 
+      <input type="text"  placeholder='task' onChange={(e) => setNewtask({...newtask, titre : e.target.value})}/>
       {
         Tasks.map(item =>(
           <>
@@ -26,7 +32,10 @@ function App() {
           </>
         ))
       }
+      <button onClick={() =>dispatch(AddTask({task : newtask}))}>ADD</button>
       
+     
+
     </div>
   );
 }
